@@ -2,6 +2,9 @@
 
 This project provides a serverless microservice architecture for a bus company using AWS services. It includes a frontend static website, an API Gateway, Lambda functions, and DynamoDB tables. The setup is designed to handle various services for the bus company, such as user registration, login, booking, and ordering.
 
+![mermaid-diagram-2024-08-17-165727](https://github.com/user-attachments/assets/61d66dce-b6e3-4567-a8c2-6982c007600a)
+
+
 ## Architecture Overview
 
 1. **Frontend**:
@@ -54,7 +57,8 @@ This project provides a serverless microservice architecture for a bus company u
 2. Configure API Gateway and deploy Lambda functions.
 3. Ensure DynamoDB tables are created and linked with Lambda functions.
 
-For more details on setting up and configuring each component, refer to the respective AWS documentation.
+![image](https://github.com/user-attachments/assets/952751ca-db15-46b3-8175-4a35ea872dc9)
+
 
 ## Author
 
