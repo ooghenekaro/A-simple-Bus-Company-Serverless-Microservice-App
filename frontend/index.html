@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Company Services</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-image: url('background.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        input[type="text"], input[type="number"], input[type="email"], input[type="password"] {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #28a745;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Bus Company Services</h2>
+    <form id="serviceForm">
+        <label for="service">Select Service:</label>
+        <select id="service" name="service">
+            <option value="register">Register</option>
+            <option value="login">Login</option>
+            <option value="book">Book</option>
+            <option value="order">Order</option>
+        </select>
+
+        <!-- Common fields -->
+        <label for="user_id">User ID:</label>
+        <input type="text" id="user_id" name="user_id" required>
+
+        <!-- Additional fields for specific services -->
+        <div id="additionalFields">
+            <!-- Fields will be dynamically inserted here -->
+        </div>
+
+        <button type="submit">Submit</button>
+    </form>
+    <p id="message"></p>
+</div>
+
+<script>
+    const additionalFields = document.getElementById('additionalFields');
+    const serviceForm = document.getElementById('serviceForm');
+
+    document.getElementById('service').addEventListener('change', function() {
+        const selectedService = this.value;
+        additionalFields.innerHTML = ''; // Clear existing fields
+
+        if (selectedService === 'register') {
+            additionalFields.innerHTML = `
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            `;
+        } else if (selectedService === 'login') {
+            additionalFields.innerHTML = `
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            `;
+        } else if (selectedService === 'book') {
+            additionalFields.innerHTML = `
+                <label for="trip_id">Trip ID:</label>
+                <input type="text" id="trip_id" name="trip_id" required>
+
+                <label for="seats">Number of Seats:</label>
+                <input type="number" id="seats" name="seats" required>
+            `;
+        } else if (selectedService === 'order') {
+            additionalFields.innerHTML = `
+                <label for="product_id">Product ID:</label>
+                <input type="text" id="product_id" name="product_id" required>
+
+                <label for="quantity">Quantity:</label>
+                <input type="number" id="quantity" name="quantity" required>
+            `;
+        }
+    });
+
+    serviceForm.addEventListener('submit', async function(event) {
+        event.preventDefault();
+
+        const selectedService = document.getElementById('service').value;
+        let apiUrl = '';
+
+        switch (selectedService) {
+            case 'register':
+                apiUrl = 'https://u3phsk4fs4.execute-api.eu-west-2.amazonaws.com/v1/register';
+                break;
+            case 'login':
+                apiUrl = 'https://u3phsk4fs4.execute-api.eu-west-2.amazonaws.com/v1/login';
+                break;
+            case 'book':
+                apiUrl = 'https://u3phsk4fs4.execute-api.eu-west-2.amazonaws.com/v1/book';
+                break;
+            case 'order':
+                apiUrl = 'https://u3phsk4fs4.execute-api.eu-west-2.amazonaws.com/v1/order';
+                break;
+        }
+
+        const formData = new FormData(serviceForm);
+        const data = {};
+        formData.forEach((value, key) => {
+            data[key] = value;
+        });
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                document.getElementById('message').textContent = `Success! Response: ${JSON.stringify(result)}`;
+            } else {
+                document.getElementById('message').textContent = `Failed to perform ${selectedService}. Please try again.`;
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            document.getElementById('message').textContent = 'An error occurred. Please try again.';
+        }
+    });
+</script>
+
+</body>
+</html>
