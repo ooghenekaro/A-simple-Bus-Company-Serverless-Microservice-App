@@ -57,7 +57,8 @@ This project provides a serverless microservice architecture for a bus company u
 2. Configure API Gateway and deploy Lambda functions.
 3. Ensure DynamoDB tables are created and linked with Lambda functions.
 
-![image](https://github.com/user-attachments/assets/952751ca-db15-46b3-8175-4a35ea872dc9)
+![image](https://github.com/user-attachments/assets/1637f490-bcaa-441d-9d07-82117290d21d)
+
 
 
 ## Author
